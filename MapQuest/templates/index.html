@@ -32,9 +32,9 @@
                         </button>
                     </div>
                 </div>
+                
+                <div id="error-message" style="color: red; margin-top: 5px;"></div>
             </div>
-            
-            
             
 
             <button class="btn map-btn" id="osm-layer-btn">
@@ -178,19 +178,22 @@
         // Geocoding for searching locations
         var geocoder = L.Control.Geocoder.nominatim();
         document.getElementById('search-btn').addEventListener('click', function() {
-            var query = document.getElementById('search-bar').value;
+    var query = document.getElementById('search-bar').value;
+    var errorMessage = document.getElementById('error-message'); 
+    errorMessage.textContent = ''; 
 
-            geocoder.geocode(query, function(results) {
-                if (results.length > 0) {
-                    var latlng = results[0].center;
-                    map.setView(latlng, 14);
-                    L.marker(latlng).addTo(map).bindPopup(results[0].html || results[0].name).openPopup();
-                    console.log("Moved to: ", latlng);
-                } else {
-                    alert("Location not found.");
-                }
-            });
-        });
+    geocoder.geocode(query, function(results) {
+        if (results.length > 0) {
+            var latlng = results[0].center;
+            map.setView(latlng, 14);
+            L.marker(latlng).addTo(map).bindPopup(results[0].html || results[0].name).openPopup();
+            console.log("Moved to: ", latlng);
+        } else {
+            errorMessage.textContent = "Location not found."; 
+        }
+    });
+});
+
     </script>
 </body>
 
