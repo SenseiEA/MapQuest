@@ -24,9 +24,18 @@
             </a>
 
             <div id="search-container">
-                <input type="text" class="form-control" id="search-bar" placeholder="Search location...">
-                <button class="btn map-btn" id="search-btn">Search</button>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search-bar" placeholder="Search location...">
+                    <div class="input-group-append">
+                        <button class="btn" id="search-btn" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
+            
+            
+            
 
             <button class="btn map-btn" id="osm-layer-btn">
                 <i class="fas fa-map"></i> OpenStreetMap
