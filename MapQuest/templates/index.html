@@ -24,9 +24,18 @@
             </a>
 
             <div id="search-container">
-                <input type="text" class="form-control" id="search-bar" placeholder="Search location...">
-                <button class="btn map-btn" id="search-btn">Search</button>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search-bar" placeholder="Search location...">
+                    <div class="input-group-append">
+                        <button class="btn" id="search-btn" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="error-message" style="color: red; margin-top: 5px;"></div>
             </div>
+            
 
             <button class="btn map-btn" id="osm-layer-btn">
                 <i class="fas fa-map"></i> OpenStreetMap
@@ -37,6 +46,8 @@
             <button class="btn map-btn" id="google-sat-btn">
                 <i class="fas fa-satellite"></i> Google Satellite
             </button>
+            <hr>
+            <h4>Measurement Controls</h4>
             <button class="btn map-btn" id="measure-btn">
                 <i class="fas fa-ruler"></i> Measure Distance
             </button>
@@ -44,16 +55,15 @@
             <button class="btn map-btn" id="finish-measure-btn">
                 <i class="fas fa-check"></i> Finish Measuring
             </button>
-            
+
+            <!-- Display measured distance below the finish measure button -->
+            <div id="distance-display" style="margin-top: 10px; padding: 10px; background: #f8f9fa; border: 1px solid #ccc;">
+                Total Distance: <strong id="total-distance">0</strong> meters
+            </div>
         </div>
     </div>
 
     <div id="map"></div>
-    
-    <!-- Display measured distance -->
-    <div id="distance-display" style="position: absolute; bottom: 10px; left: 10px; z-index: 1000; background: white; padding: 5px; border: 1px solid #ccc;">
-        Total Distance: <span id="total-distance">0</span> meters
-    </div>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
@@ -168,19 +178,22 @@
         // Geocoding for searching locations
         var geocoder = L.Control.Geocoder.nominatim();
         document.getElementById('search-btn').addEventListener('click', function() {
-            var query = document.getElementById('search-bar').value;
+    var query = document.getElementById('search-bar').value;
+    var errorMessage = document.getElementById('error-message'); 
+    errorMessage.textContent = ''; 
 
-            geocoder.geocode(query, function(results) {
-                if (results.length > 0) {
-                    var latlng = results[0].center;
-                    map.setView(latlng, 14);
-                    L.marker(latlng).addTo(map).bindPopup(results[0].html || results[0].name).openPopup();
-                    console.log("Moved to: ", latlng);
-                } else {
-                    alert("Location not found.");
-                }
-            });
-        });
+    geocoder.geocode(query, function(results) {
+        if (results.length > 0) {
+            var latlng = results[0].center;
+            map.setView(latlng, 14);
+            L.marker(latlng).addTo(map).bindPopup(results[0].html || results[0].name).openPopup();
+            console.log("Moved to: ", latlng);
+        } else {
+            errorMessage.textContent = "Location not found."; 
+        }
+    });
+});
+
     </script>
 </body>
 
